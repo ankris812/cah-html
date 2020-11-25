@@ -4,8 +4,8 @@ define(HOST, 'localhost');
 define(USERNAME, 'root');
 define(PASSWORD, 'JacopoT1');
 
-   mysql_connect( HOST, USERNAME, PASSWORD) or die("Could not connect");
-   mysql_select_db ("CAH_db")or die('Cannot connect to the database because: ' . mysql_error());
+   $mysqli = new mysqli( HOST, USERNAME, PASSWORD) or die("Could not connect");
+   $mysqli->select_db("CAH_db")or die('Cannot connect to the database because: ' . $mysqli->error);
 
 //functions
 function checkVar($var)
@@ -22,8 +22,8 @@ function checkVar($var)
 	}
 }
 function hasData($query)
-{	$rows = mysql_query($query)or die("somthing is wrong");
-	$results = mysql_num_rows($rows);
+{	$rows = $mysqli->query($query)or die("somthing is wrong");
+	$results = $rows->num_rows;
 	if($results == 0)
 	{
 		return false;  
@@ -79,7 +79,7 @@ function cleanInput($data)
 		//   * Made some quantifiers possessive
 
 		// Fix &entity\n;
-		$data = str_replace(array('&amp;','&lt;','&gt;'), array('&amp;amp;','&amp;lt;','&amp;gt;'), $data);
+		$data = str_replace(array('&','<','>'), array('&amp;','&lt;','&gt;'), $data);
 		$data = preg_replace('/(&#*\w+)[\x00-\x20]+;/u', '$1;', $data);
 		$data = preg_replace('/(&#x*[0-9A-F]+);*/iu', '$1;', $data);
 		$data = html_entity_decode($data, ENT_COMPAT, 'UTF-8');

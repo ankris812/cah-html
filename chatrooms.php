@@ -8,7 +8,7 @@
  
         $getRooms = "SELECT *
         			 FROM chat_rooms";
-        $roomResults = mysql_query($getRooms);		  
+        $roomResults = $mysqli->query($getRooms);		  
 
 
 include('templates/header.php');
@@ -24,10 +24,10 @@ include('templates/header.php');
             	<h3>Rooms</h3>
                 <ul>
                     <?php 
-                        while($rooms = mysql_fetch_array($roomResults)):
+                        while($rooms = $roomResults->fetch_array()):
                             $room = $rooms['name'];
-                            $query = mysql_query("SELECT * FROM `chat_users_rooms` WHERE `room` = '$room' ") or die("Cannot find data". mysql_error());
-                            $numOfUsers = mysql_num_rows($query);
+                            $query = $mysqli->query("SELECT * FROM `chat_users_rooms` WHERE `room` = '$room' ") or die("Cannot find data". $mysqli->error);
+                            $numOfUsers = $query->num_rows;
                     ?>
                     <li>
                         <a href="room/?name=<?php echo $rooms['name']?>"><?php echo $rooms['name'] . "<span>Users chatting: <strong>" . $numOfUsers . "</strong></span>" ?></a>

@@ -12,14 +12,14 @@
   			           FROM chat_rooms
   		             WHERE name = '$name'";
   		         
-      $roomResults = mysql_query($getRooms);
+      $roomResults = $mysqli->query($getRooms);
 		
-	  	if (mysql_num_rows($roomResults) < 1) {
+	  	if ($roomResults->num_rows < 1) {
   			header("Location: ../chatrooms.php");
   			die();
   		}
         	
-      while ($rooms = mysql_fetch_array($roomResults)) {
+      while ($rooms = $roomResults->fetch_array()) {
           $file =  $rooms['file'];
       }
 
